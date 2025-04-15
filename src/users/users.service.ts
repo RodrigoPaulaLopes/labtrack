@@ -11,7 +11,8 @@ export class UsersService {
   constructor(@InjectRepository(User) private userRepository: Repository<User>) {}
   
   create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+    this.userRepository.create(createUserDto);
+    return this.userRepository.save(createUserDto);
   }
 
   findAll() {

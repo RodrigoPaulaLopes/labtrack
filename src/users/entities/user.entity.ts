@@ -5,10 +5,10 @@ export class User {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @Column({ type: 'varchar', nullable: true })
+    @Column({ type: 'varchar', nullable: true, default: '' })
     firstName: string;
 
-    @Column({ type: 'varchar', nullable: true })
+    @Column({ type: 'varchar', nullable: true, default: '' })
     lastName: string;
 
     @Column({ type: 'varchar', unique: true, nullable: false })
