@@ -1,0 +1,14 @@
+import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
+import { Observable, tap } from 'rxjs';
+
+@Injectable()
+export class LogInterceptor implements NestInterceptor {
+  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+
+    const dt = Date.now()
+    
+    return next.handle().pipe(tap(() => {
+        console.log(`tempo de execução: ${Date.now() - dt}`)
+    }) );
+  }
+}

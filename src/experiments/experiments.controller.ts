@@ -1,0 +1,35 @@
+import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { ExperimentsService } from './experiments.service';
+import { CreateExperimentDto } from './dto/create-experiment.dto';
+import { UpdateExperimentDto } from './dto/update-experiment.dto';
+import { User } from 'src/decorators/user.decorator';
+
+@Controller('experiments')
+export class ExperimentsController {
+  constructor(private readonly experimentsService: ExperimentsService) {}
+
+  @Post()
+  create(@User('id') @Body() createExperimentDto: CreateExperimentDto) {
+    return this.experimentsService.create(createExperimentDto);
+  }
+
+  @Get()
+  findAll() {
+    return this.experimentsService.findAll();
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.experimentsService.findOne(+id);
+  }
+
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateExperimentDto: UpdateExperimentDto) {
+    return this.experimentsService.update(+id, updateExperimentDto);
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.experimentsService.remove(+id);
+  }
+}
