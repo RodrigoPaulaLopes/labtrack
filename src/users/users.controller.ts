@@ -13,10 +13,9 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   } 
 
-  @UseInterceptors(LogInterceptor)
   @Get()
-  findAll(@Query('id') id) {
-    return this.usersService.findAll(id);
+  findAll() {
+    return this.usersService.findAll();
   }
 
   @Get(':id')
