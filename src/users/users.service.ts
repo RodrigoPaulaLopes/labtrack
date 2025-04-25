@@ -53,6 +53,7 @@ export class UsersService {
 
     return user;
   }
+  
   async verifyCredentials(email: string, password: string) {
     const user = await this.usersRepository.findOne({ where: { email } });
     if (!user) throw new NotFoundException("Invalid credentials");
