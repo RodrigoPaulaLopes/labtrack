@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/users/users.service';
 import { AuthDto } from './dto/auth.dto';
@@ -33,6 +33,12 @@ export class AuthenticationService {
     }
 
     async validateToken(token: string) {
-        // return await this.jwtService.verifyAsync(token)
+        try {
+            return this.jwtService.verify(token, {
+                secret: process.env.JWT_SECRET,
+            })
+        }catch (error) {
+            throw new BadRequestException(error.message)
+        }
     }
 }
