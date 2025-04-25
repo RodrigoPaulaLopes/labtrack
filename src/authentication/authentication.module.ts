@@ -14,5 +14,6 @@ import { UsersModule } from 'src/users/users.module';
   })],
   controllers: [AuthenticationController],
   providers: [AuthenticationService],
+  exports: [AuthenticationService],
 })
 export class AuthenticationModule {}

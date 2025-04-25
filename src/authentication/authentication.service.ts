@@ -17,11 +17,11 @@ export class AuthenticationService {
 
     async signIn({ email, password }: AuthDto) {
         const user = await this.userService.verifyCredentials(email, password);
-        return await this.createToken(user);
+        return this.createToken(user);
     }
 
-    async createToken(user: User) {
-        const token = await this.jwtService.signAsync({
+    createToken(user: User) {
+        const token = this.jwtService.sign({
             email: user.email,
             id: user.id,
         }, {
@@ -32,12 +32,22 @@ export class AuthenticationService {
         return { accessToken: token } as TokenDto
     }
 
-    async validateToken(token: string) {
+    isValidToken(token: string) {
+        try {
+            this.validateToken(token)
+            return true
+        } catch (error) {
+            console.log(error);
+            
+            return false
+        }
+    }
+    validateToken(token: string) {
         try {
             return this.jwtService.verify(token, {
                 secret: process.env.JWT_SECRET,
             })
-        }catch (error) {
+        } catch (error) {
             throw new BadRequestException(error.message)
         }
     }
