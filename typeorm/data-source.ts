@@ -2,6 +2,7 @@ import { DataSource } from "typeorm";
 import * as dotenv from "dotenv";
 import { CreateUserTable1744728352093 } from "./migrations/1744728352093-createUserTable";
 import { User } from "src/users/entities/user.entity";
+
 dotenv.config();
 const dataSource = new DataSource({
     type: "mysql",
