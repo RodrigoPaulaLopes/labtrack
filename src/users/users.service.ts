@@ -1,16 +1,18 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { hashSync } from 'bcrypt';
+import { compare, compareSync, hashSync } from 'bcrypt';
 @Injectable()
 export class UsersService {
 
   constructor(
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>) { }
+
+
   async create({ email, password, confirmPassword, firstName, lastName }: CreateUserDto) {
     const userExists = await this.usersRepository.findOne({ where: { email } });
 
@@ -44,6 +46,22 @@ export class UsersService {
     return `This action returns a #${id} user`;
   }
 
+  async findByEmail(email: string) {
+    const user = await this.usersRepository.findOne({ where: { email } });
+
+    if (!user) throw new NotFoundException('User not found');
+
+    return user;
+  }
+  async verifyCredentials(email: string, password: string) {
+    const user = await this.usersRepository.findOne({ where: { email } });
+    if (!user) throw new NotFoundException("Invalid credentials");
+
+    if (!compareSync(password, user.password)) throw new NotFoundException("Invalid credentials");
+
+    return user;
+
+  }
   update(id: number, updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;
   }
