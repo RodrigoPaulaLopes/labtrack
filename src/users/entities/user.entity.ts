@@ -4,8 +4,6 @@ import {
     CreateDateColumn,
     UpdateDateColumn,
     DeleteDateColumn,
-    Generated,
-    PrimaryColumn,
     PrimaryGeneratedColumn,
 } from 'typeorm';
 

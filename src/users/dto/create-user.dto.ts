@@ -1,8 +1,9 @@
 import { Not } from "typeorm";
-import { IsNotEmpty, IsOptional, IsStrongPassword } from 'class-validator'
+import { IsEmail, IsNotEmpty, IsOptional, IsStrongPassword } from 'class-validator'
 export class CreateUserDto {
     
     @IsNotEmpty()
+    @IsEmail()
     email: string;
     @IsNotEmpty()
     @IsStrongPassword({
