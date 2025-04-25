@@ -1,11 +1,35 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { Repository } from 'typeorm';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+
+  constructor(private readonly usersRepository: Repository<User>) {}
+  create({email, password, confirmPassword, firstName, lastName}: CreateUserDto) {
+      try {
+        if (this.usersRepository.exists({ where: { email } })) {
+          throw new BadRequestException('User already exists');
+        }
+
+        if (password !== confirmPassword) {
+          throw new BadRequestException('Passwords do not match');
+        }
+        const user = this.usersRepository.create({
+          email,
+          password,
+          firstName,
+          lastName
+        });
+        this.usersRepository.save(user);
+        return user;
+      } catch (error) {
+          throw new Error("Error creating user: " + error.message);
+          
+      }
+    
   }
 
   findAll() {
