@@ -3,12 +3,12 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
-
+import * as bcrypt from 'bcrypt';
 @Injectable()
 export class UsersService {
 
   constructor(private readonly usersRepository: Repository<User>) {}
-  create({email, password, confirmPassword, firstName, lastName}: CreateUserDto) {
+  async create({email, password, confirmPassword, firstName, lastName}: CreateUserDto) {
       try {
         if (this.usersRepository.exists({ where: { email } })) {
           throw new BadRequestException('User already exists');
@@ -17,13 +17,16 @@ export class UsersService {
         if (password !== confirmPassword) {
           throw new BadRequestException('Passwords do not match');
         }
+
+        const new_password =  bcrypt.hashSync(password, 10);
+        
         const user = this.usersRepository.create({
           email,
-          password,
+          password: new_password,
           firstName,
           lastName
         });
-        this.usersRepository.save(user);
+        await this.usersRepository.save(user);
         return user;
       } catch (error) {
           throw new Error("Error creating user: " + error.message);
