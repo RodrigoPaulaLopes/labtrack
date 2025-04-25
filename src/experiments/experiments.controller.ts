@@ -2,14 +2,14 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { ExperimentsService } from './experiments.service';
 import { CreateExperimentDto } from './dto/create-experiment.dto';
 import { UpdateExperimentDto } from './dto/update-experiment.dto';
-import { User } from 'src/decorators/user.decorator';
+
 
 @Controller('experiments')
 export class ExperimentsController {
   constructor(private readonly experimentsService: ExperimentsService) {}
 
   @Post()
-  create(@User('id') @Body() createExperimentDto: CreateExperimentDto) {
+  create(@Body() createExperimentDto: CreateExperimentDto) {
     return this.experimentsService.create(createExperimentDto);
   }
 
