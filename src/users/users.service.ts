@@ -3,8 +3,8 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
-import * as bcrypt from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
+import { hashSync } from 'bcrypt';
 @Injectable()
 export class UsersService {
 
@@ -12,9 +12,9 @@ export class UsersService {
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>) { }
   async create({ email, password, confirmPassword, firstName, lastName }: CreateUserDto) {
+    const userExists = await this.usersRepository.findOne({ where: { email } });
 
-
-    if (await this.usersRepository.exists({ where: { email } })) {
+    if (userExists) {
       throw new BadRequestException('User already exists');
     }
 
@@ -22,18 +22,19 @@ export class UsersService {
       throw new BadRequestException('Passwords do not match');
     }
 
-    const new_password = await bcrypt.hash(password, 10);
+    password = hashSync(password, 10);
 
     const user = this.usersRepository.create({
       email,
-      password: new_password,
+      password,
       firstName,
-      lastName
+      lastName,
     });
-    await this.usersRepository.save(user);
-    return user;
 
+    await this.usersRepository.save(user);
+    return user
   }
+
 
   findAll() {
     return `This action returns all users`;
