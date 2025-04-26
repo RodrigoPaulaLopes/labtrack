@@ -2,6 +2,7 @@ import { DataSource } from "typeorm";
 import * as dotenv from "dotenv";
 import { CreateUserTable1744728352093 } from "./migrations/1744728352093-createUserTable";
 import { User } from "src/users/entities/user.entity";
+import { AddUserRoleColumn1745626189304 } from "./migrations/1745626189304-addUserRoleColumn";
 
 dotenv.config();
 const dataSource = new DataSource({
@@ -14,7 +15,7 @@ const dataSource = new DataSource({
     synchronize: false,
     logging: false,
     entities: [User],
-    migrations: [CreateUserTable1744728352093],
+    migrations: [CreateUserTable1744728352093, AddUserRoleColumn1745626189304],
 })
 
 export default dataSource;
