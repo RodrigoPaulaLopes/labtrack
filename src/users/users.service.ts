@@ -68,7 +68,17 @@ export class UsersService {
     return user;
 
   }
-  update(id: number, updateUserDto: UpdateUserDto) {
+  async updateResetPasswordCode(id: string, resetPasswordCode: string) {
+
+    const user = await this.findOne(id);
+
+    user.codeResetPassword = resetPasswordCode;
+    await this.usersRepository.save(user);
+    return user;
+
+  }
+
+  update(id: string, user: UpdateUserDto) {
     return `This action updates a #${id} user`;
   }
 

@@ -27,12 +27,15 @@ export class AuthenticationService {
         const user = await this.userService.findByEmail(email);
 
         // create new reset password code
-        
-        this.emailService.sendEmail(user.email, 'Recuperação de senha', `
+        const resetPasswordCode = Math.floor(100000 + Math.random() * 900000).toString();
+
+        const userUpdated = await this.userService.updateResetPasswordCode(user.id, resetPasswordCode);
+
+        this.emailService.sendEmail(userUpdated.email, 'Recuperação de senha', `
         <h1>Recuperação de senha</h1>
-        <p>Olá ${user.email},</p>
+        <p>Olá ${userUpdated.email},</p>
         <p>Você solicitou a recuperação de senha. Aqui está o seu código:</p>
-        <h2>${1234}</h2>
+        <h2>${userUpdated.codeResetPassword}</h2>
         <p>Se você não solicitou essa recuperação, ignore este e-mail.</p>
         <p>Atenciosamente,</p>
         <p>Equipe Labtrack</p>
