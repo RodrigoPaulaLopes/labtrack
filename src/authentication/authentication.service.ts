@@ -26,12 +26,18 @@ export class AuthenticationService {
     async sendResetPasswordCode(email: string) {
         const user = await this.userService.findByEmail(email);
 
-        // create new reset password code
+
         const resetPasswordCode = Math.floor(100000 + Math.random() * 900000).toString();
 
-        const userUpdated = await this.userService.updateResetPasswordCode(user.id, resetPasswordCode);
+        const expiresAt = new Date();
+        expiresAt.setMinutes(expiresAt.getMinutes() + 10);
 
-        this.emailService.sendEmail(userUpdated.email, 'Recuperação de senha', `
+
+    
+
+        const userUpdated = await this.userService.updateResetPasswordCode(user.id, resetPasswordCode, expiresAt, 3);
+
+        this.emailService.sendEmail('rodrigo.plopesti@gmail.com', 'Recuperação de senha', `
         <h1>Recuperação de senha</h1>
         <p>Olá ${userUpdated.email},</p>
         <p>Você solicitou a recuperação de senha. Aqui está o seu código:</p>

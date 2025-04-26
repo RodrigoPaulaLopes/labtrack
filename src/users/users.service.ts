@@ -68,11 +68,16 @@ export class UsersService {
     return user;
 
   }
-  async updateResetPasswordCode(id: string, resetPasswordCode: string) {
+
+
+  async updateResetPasswordCode(id: string, resetPasswordCode: string, expiresAt: Date, attempts: number) {
 
     const user = await this.findOne(id);
 
+
     user.codeResetPassword = resetPasswordCode;
+    user.expiresAt = expiresAt;
+    user.resetPasswordAttempts = attempts;
     await this.usersRepository.save(user);
     return user;
 
