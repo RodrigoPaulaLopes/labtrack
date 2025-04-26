@@ -12,7 +12,7 @@ export class AuthenticationController {
   }
 
   @Post('send-code')
-  async resetPasswordCode(@Body() email: string) {
+  async resetPasswordCode(@Body('email') email: string) {
     return await this.authenticationService.sendResetPasswordCode(email)
   }
 }

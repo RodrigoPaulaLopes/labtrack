@@ -28,7 +28,7 @@ export class AuthenticationService {
 
         // create new reset password code
         
-        this.emailService.sendEmail(email, 'Recuperação de senha', `
+        this.emailService.sendEmail(user.email, 'Recuperação de senha', `
         <h1>Recuperação de senha</h1>
         <p>Olá ${user.email},</p>
         <p>Você solicitou a recuperação de senha. Aqui está o seu código:</p>
