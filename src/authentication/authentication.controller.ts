@@ -10,4 +10,9 @@ export class AuthenticationController {
   async login(@Body() user: AuthDto) {
     return await this.authenticationService.signIn(user)
   }
+
+  @Post('send-code')
+  async resetPasswordCode(@Body() email: string) {
+    return await this.authenticationService.sendResetPasswordCode(email)
+  }
 }

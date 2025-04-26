@@ -20,6 +20,13 @@ export class AuthenticationService {
         return this.createToken(user);
     }
 
+    async sendResetPasswordCode(email: string) {
+        const user = await this.userService.findByEmail(email);
+
+        
+    }
+
+
     createToken(user: User) {
         const token = this.jwtService.sign({
             email: user.email,
