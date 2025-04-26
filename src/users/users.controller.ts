@@ -3,7 +3,7 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthenticationGuard } from 'src/guards/auth/authentication.guard';
-import { UserParam } from 'src/decorators/user.decorator';
+import { UserParam } from 'src/paramsDecorators/user.decorator';
 import { User } from './entities/user.entity';
 
 @Controller('users')
@@ -18,7 +18,7 @@ export class UsersController {
   @UseGuards(AuthenticationGuard)
   @Get()
   findAll(@UserParam() user: User) {
-    
+
     return this.usersService.findAll()
   }
 
