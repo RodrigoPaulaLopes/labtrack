@@ -82,7 +82,10 @@ export class UsersService {
   }
 
   async updatePassword(id: string, password: string) {
-    
+    const user = await this.findOne(id);
+    user.password = hashSync(password, 10);
+    await this.usersRepository.save(user);
+    return user;
   }
 
   update(id: string, user: UpdateUserDto) {

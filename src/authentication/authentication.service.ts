@@ -5,7 +5,8 @@ import { AuthDto } from './dto/auth.dto';
 import { User } from 'src/users/entities/user.entity';
 import { TokenDto } from './dto/token.dto';
 import { EmailService } from 'src/email/email/email.service';
-
+import { ResetPasswordDto } from './dto/reset-password.dto';
+import { hashSync} from "bcrypt"
 @Injectable()
 export class AuthenticationService {
 
@@ -32,7 +33,7 @@ export class AuthenticationService {
         const expiresAt = new Date();
         expiresAt.setMinutes(expiresAt.getMinutes() + 10);
 
-
+        const {accessToken} = this.createToken(user);
     
 
         const userUpdated = await this.userService.updateResetPasswordCode(user.id, resetPasswordCode, expiresAt);
@@ -42,6 +43,9 @@ export class AuthenticationService {
         <p>Olá ${userUpdated.email},</p>
         <p>Você solicitou a recuperação de senha. Aqui está o seu código:</p>
         <h2>${userUpdated.codeResetPassword}</h2>
+        <>p>Esse código é válido por 10 minutos.</p>
+        <p>Para redefinir sua senha, clique no link abaixo:</p>
+        <a href="${process.env.FRONTEND_URL}/reset-password/${userUpdated.codeResetPassword}/${accessToken}">Redefinir senha</a>
         <p>Se você não solicitou essa recuperação, ignore este e-mail.</p>
         <p>Atenciosamente,</p>
         <p>Equipe Labtrack</p>
@@ -49,7 +53,28 @@ export class AuthenticationService {
         
     }
 
+    async resetPassword(token: string, { password, code}: ResetPasswordDto) {
+        const { id } = this.validateToken(token);
+        const user = await this.userService.findOne(id);
+        user.resetPasswordAttempts += 1;
 
+        if (user.codeResetPassword !== code) {
+            throw new BadRequestException('Invalid code');
+        }
+        
+
+        if (user.resetPasswordExpiresAt < new Date()) {
+            throw new BadRequestException('Code expired');
+        }
+
+        if(user.resetPasswordAttempts >= 3) {
+            throw new BadRequestException('Too many attempts');
+        }
+
+        await this.userService.updatePassword(user.id, password);
+
+        return { message: 'Password updated successfully' }
+    }
     createToken(user: User) {
         const token = this.jwtService.sign({
             email: user.email,
