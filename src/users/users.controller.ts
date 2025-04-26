@@ -7,6 +7,7 @@ import { UserParam } from 'src/paramsDecorators/user.decorator';
 import { User } from './entities/user.entity';
 import { Roles } from './enums/roles.enum';
 import { RolesDecorator } from 'src/decorators/roles/roles.decorator';
+import { AdminGuard } from 'src/guards/admin/admin.guard';
 
 @Controller('users')
 export class UsersController {
@@ -17,7 +18,7 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
-  @UseGuards(AuthenticationGuard)
+  @UseGuards(AuthenticationGuard, AdminGuard)
   @RolesDecorator(Roles.ADMIN)
   @Get()
   findAll(@UserParam() user: User) {

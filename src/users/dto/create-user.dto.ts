@@ -1,5 +1,6 @@
 import { Not } from "typeorm";
-import { IsEmail, IsNotEmpty, IsOptional, IsStrongPassword } from 'class-validator'
+import { IsEmail, IsEnum, IsNotEmpty, IsOptional, IsStrongPassword } from 'class-validator'
+import { Roles } from "../enums/roles.enum";
 export class CreateUserDto {
     
     @IsNotEmpty()
@@ -20,6 +21,10 @@ export class CreateUserDto {
     firstName?: string;
     @IsOptional()
     lastName?: string;
+
+    @IsOptional()
+    @IsEnum(Roles)
+    role?: Roles
 
 
 }
