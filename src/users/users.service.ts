@@ -91,7 +91,7 @@ export class UsersService {
 
   async updateAttempts(id: string, attempts: number) {
     const user = await this.findOne(id);
-    user.resetPasswordAttempts += 1;
+    user.resetPasswordAttempts = attempts;
     await this.usersRepository.save(user);
     return user;
   }

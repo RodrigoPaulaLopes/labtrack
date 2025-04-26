@@ -33,6 +33,8 @@ export class AuthenticationService {
         const expiresAt = new Date();
         expiresAt.setMinutes(expiresAt.getMinutes() + 10);
 
+        this.userService.updateAttempts(user.id, 0);
+        
         const {accessToken} = this.createToken(user);
     
 
