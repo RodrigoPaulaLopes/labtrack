@@ -35,7 +35,7 @@ export class User {
     @Column({ type: 'timestamp', nullable: true })
     resetPasswordExpiresAt?: Date;
 
-    @Column({ type: 'int', default: 3 })
+    @Column({ type: 'int', default: 0 })
     resetPasswordAttempts: number;
 
     @CreateDateColumn({ type: 'timestamp' })

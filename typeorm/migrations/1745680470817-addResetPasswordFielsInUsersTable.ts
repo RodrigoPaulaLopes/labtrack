@@ -14,7 +14,7 @@ export class AddResetPasswordFielsInUsersTable1745680470817 implements Migration
                 name: 'resetPasswordAttempts',
                 type: 'int',
                 isNullable: true,
-                default: 3,
+                default: 0,
             }),
         ])
     }

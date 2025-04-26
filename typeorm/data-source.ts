@@ -21,7 +21,7 @@ const dataSource = new DataSource({
         CreateUserTable1744728352093, 
         AddUserRoleColumn1745626189304, 
         AddCodeRestPasswordCodeColumnInUserTable1745677501661,
-        AddResetPasswordFielsInUsersTable1745680470817
+        AddResetPasswordFielsInUsersTable1745680470817,
     ],
 })
 
