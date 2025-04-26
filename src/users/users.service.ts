@@ -84,6 +84,14 @@ export class UsersService {
   async updatePassword(id: string, password: string) {
     const user = await this.findOne(id);
     user.password = hashSync(password, 10);
+    user.resetPasswordAttempts = 0;
+    await this.usersRepository.save(user);
+    return user;
+  }
+
+  async updateAttempts(id: string, attempts: number) {
+    const user = await this.findOne(id);
+    user.resetPasswordAttempts += 1;
     await this.usersRepository.save(user);
     return user;
   }

@@ -57,6 +57,7 @@ export class AuthenticationService {
         const { id } = this.validateToken(token);
         const user = await this.userService.findOne(id);
         user.resetPasswordAttempts += 1;
+        this.userService.updateAttempts(user.id, user.resetPasswordAttempts);
 
         if (user.codeResetPassword !== code) {
             throw new BadRequestException('Invalid code');
