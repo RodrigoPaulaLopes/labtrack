@@ -32,6 +32,12 @@ export class User {
     @Column({ type: 'varchar', nullable: true, length: 25 })
     codeResetPassword?: string;
 
+    @Column({ type: 'timestamp', nullable: true })
+    resetPasswordExpiresAt?: Date;
+
+    @Column({ type: 'int', default: 3 })
+    resetPasswordAttempts: number;
+
     @CreateDateColumn({ type: 'timestamp' })
     createdAt: Date;
 
