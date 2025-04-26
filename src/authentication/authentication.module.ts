@@ -5,10 +5,11 @@ import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { UsersModule } from 'src/users/users.module';
+import { EmailModule } from 'src/email/email/email.module';
 
 
 @Module({
-  imports: [forwardRef(() => UsersModule), TypeOrmModule.forFeature([User]) , JwtModule.register({
+  imports: [EmailModule, forwardRef(() => UsersModule), TypeOrmModule.forFeature([User]), JwtModule.register({
     secret: process.env.JWT_SECRET,
     signOptions: { expiresIn: process.env.JWT_EXPIRES_IN },
   })],
@@ -16,4 +17,4 @@ import { UsersModule } from 'src/users/users.module';
   providers: [AuthenticationService],
   exports: [AuthenticationService],
 })
-export class AuthenticationModule {}
+export class AuthenticationModule { }
