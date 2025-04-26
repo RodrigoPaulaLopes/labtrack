@@ -40,7 +40,7 @@ export class AuthenticationService {
 
         const userUpdated = await this.userService.updateResetPasswordCode(user.id, resetPasswordCode, expiresAt);
 
-        this.emailService.sendEmail('rodrigo.plopesti@gmail.com', 'Recuperação de senha', `
+        this.emailService.sendEmail(userUpdated.email, 'Recuperação de senha', `
         <h1>Recuperação de senha</h1>
         <p>Olá ${userUpdated.email},</p>
         <p>Você solicitou a recuperação de senha. Aqui está o seu código:</p>
