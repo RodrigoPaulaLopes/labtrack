@@ -5,6 +5,8 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthenticationGuard } from 'src/guards/auth/authentication.guard';
 import { UserParam } from 'src/paramsDecorators/user.decorator';
 import { User } from './entities/user.entity';
+import { Roles } from './enums/roles.enum';
+import { RolesDecorator } from 'src/decorators/roles/roles.decorator';
 
 @Controller('users')
 export class UsersController {
@@ -16,6 +18,7 @@ export class UsersController {
   }
 
   @UseGuards(AuthenticationGuard)
+  @RolesDecorator(Roles.ADMIN)
   @Get()
   findAll(@UserParam() user: User) {
 
